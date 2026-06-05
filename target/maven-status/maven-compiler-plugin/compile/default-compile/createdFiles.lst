@@ -1,5 +1,4 @@
-com\nazyrov\AIPlayer.class
-com\nazyrov\Board.class
-com\nazyrov\Program$1.class
-com\nazyrov\GameState.class
-com\nazyrov\Program.class
+com\mycompany\app\Program.class
+com\mycompany\app\AIPlayer.class
+com\mycompany\app\Board.class
+com\mycompany\app\GameState.class
