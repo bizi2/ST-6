@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">my-app</a> &gt; <a href="index.source.html" class="el_package">com.mycompany.app</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">// Copyright 2025 UNN-CS
+// Nazyrov A.A.
+
+package com.mycompany.app;
+
+public class Board {
+    private char[][] board_arr;
+    private char curr_player;
+    private GameState game_flag;
+    
+<span class="fc" id="L11">    public Board() {</span>
+<span class="fc" id="L12">        board_arr = new char[3][3];</span>
+<span class="fc" id="L13">        curr_player = 'X';</span>
+<span class="fc" id="L14">        game_flag = GameState.GAME_ACTIVE;</span>
+<span class="fc" id="L15">        initBoardArr();</span>
+<span class="fc" id="L16">    }</span>
+    
+    private void initBoardArr() {
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for (int row_idx = 0; row_idx &lt; 3; row_idx++) {</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">            for (int col_idx = 0; col_idx &lt; 3; col_idx++) {</span>
+<span class="fc" id="L21">                board_arr[row_idx][col_idx] = '-';</span>
+            }
+        }
+<span class="fc" id="L24">    }</span>
+    
+    public boolean doMove(int row_pos, int col_pos) {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (isValidPos(row_pos, col_pos)) {</span>
+<span class="fc" id="L28">            board_arr[row_pos][col_pos] = curr_player;</span>
+<span class="fc" id="L29">            updateGameStatus();</span>
+<span class="fc" id="L30">            switchCurrPlayer();</span>
+<span class="fc" id="L31">            return true;</span>
+        }
+<span class="fc" id="L33">        return false;</span>
+    }
+    
+    private boolean isValidPos(int r_pos, int c_pos) {
+<span class="pc bpc" id="L37" title="2 of 10 branches missed.">        return r_pos &gt;= 0 &amp;&amp; r_pos &lt; 3 &amp;&amp; c_pos &gt;= 0 &amp;&amp; c_pos &lt; 3 &amp;&amp; board_arr[r_pos][c_pos] == '-';</span>
+    }
+    
+    private void updateGameStatus() {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (checkWinCondition(curr_player)) {</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            game_flag = (curr_player == 'X') ? GameState.FIRST_WON : GameState.SECOND_WON;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        } else if (isBoardFull()) {</span>
+<span class="fc" id="L44">            game_flag = GameState.TIE_GAME;</span>
+        }
+<span class="fc" id="L46">    }</span>
+    
+    private boolean checkWinCondition(char player_char) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (int idx = 0; idx &lt; 3; idx++) {</span>
+<span class="fc bfc" id="L50" title="All 6 branches covered.">            if (board_arr[idx][0] == player_char &amp;&amp; board_arr[idx][1] == player_char &amp;&amp; board_arr[idx][2] == player_char) return true;</span>
+<span class="fc bfc" id="L51" title="All 6 branches covered.">            if (board_arr[0][idx] == player_char &amp;&amp; board_arr[1][idx] == player_char &amp;&amp; board_arr[2][idx] == player_char) return true;</span>
+        }
+<span class="fc bfc" id="L53" title="All 6 branches covered.">        if (board_arr[0][0] == player_char &amp;&amp; board_arr[1][1] == player_char &amp;&amp; board_arr[2][2] == player_char) return true;</span>
+<span class="fc bfc" id="L54" title="All 6 branches covered.">        if (board_arr[0][2] == player_char &amp;&amp; board_arr[1][1] == player_char &amp;&amp; board_arr[2][0] == player_char) return true;</span>
+<span class="fc" id="L55">        return false;</span>
+    }
+    
+    private boolean isBoardFull() {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (int r_idx = 0; r_idx &lt; 3; r_idx++) {</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            for (int c_idx = 0; c_idx &lt; 3; c_idx++) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                if (board_arr[r_idx][c_idx] == '-') return false;</span>
+            }
+        }
+<span class="fc" id="L64">        return true;</span>
+    }
+    
+    private void switchCurrPlayer() {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        curr_player = (curr_player == 'X') ? 'O' : 'X';</span>
+<span class="fc" id="L69">    }</span>
+    
+<span class="fc" id="L71">    public char getCurrPlayer() { return curr_player; }</span>
+<span class="fc" id="L72">    public GameState getGameFlag() { return game_flag; }</span>
+<span class="fc" id="L73">    public char getCellVal(int r_pos, int c_pos) { return board_arr[r_pos][c_pos]; }</span>
+<span class="fc" id="L74">    public boolean canMoveHere(int r_pos, int c_pos) { return isValidPos(r_pos, c_pos); }</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">    public boolean isGameFinished() { return game_flag != GameState.GAME_ACTIVE; }</span>
+    
+    public void printBoardState() {
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (int r_idx = 0; r_idx &lt; 3; r_idx++) {</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            for (int c_idx = 0; c_idx &lt; 3; c_idx++) {</span>
+<span class="nc" id="L80">                System.out.print(board_arr[r_idx][c_idx] + &quot; &quot;);</span>
+            }
+<span class="nc" id="L82">            System.out.println();</span>
+        }
+<span class="nc" id="L84">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
