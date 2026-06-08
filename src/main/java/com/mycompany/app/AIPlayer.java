@@ -1,49 +1,49 @@
 // Copyright 2025 UNN-CS
+// Nazyrov A.A.
 
 package com.mycompany.app;
 
-public class AIPlayer {
-    private Board board;
+public class AiPlayer {
+    private BoardGrid board;
     
-    public AIPlayer(Board b) {
-        board = b;
+    public AiPlayer(BoardGrid b) {
+        this.board = b;
     }
     
-    public int[] getBestMove() {
+    public int[] findBestMove() {
         int bestScore = Integer.MIN_VALUE;
-        int[] best = {-1, -1};
+        int[] bestPos = {-1, -1};
         
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board.isValidMove(i, j)) {
-                    board.makeMove(i, j);
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                if (board.isMoveLegal(row, col)) {
+                    board.placeMark(row, col);
                     int score = minimax(false);
-                    // ?????????? ???
-                    board.makeMove(i, j); // ?????????? ?????? ??????
+                    undoMove(row, col);
                     if (score > bestScore) {
                         bestScore = score;
-                        best = new int[]{i, j};
+                        bestPos = new int[]{row, col};
                     }
                 }
             }
         }
-        return best;
+        return bestPos;
     }
     
-    private int minimax(boolean isMax) {
-        GameState s = board.getState();
-        if (s == GameState.X_WON) return 10;
-        if (s == GameState.O_WON) return -10;
-        if (s == GameState.DRAW) return 0;
+    private int minimax(boolean isMaximizing) {
+        GameStatus state = board.getGameStatus();
+        if (state == GameStatus.X_VICTORY) return 10;
+        if (state == GameStatus.O_VICTORY) return -10;
+        if (state == GameStatus.TIE) return 0;
         
-        if (isMax) {
+        if (isMaximizing) {
             int best = Integer.MIN_VALUE;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (board.isValidMove(i, j)) {
-                        board.makeMove(i, j);
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+                    if (board.isMoveLegal(row, col)) {
+                        board.placeMark(row, col);
                         int score = minimax(false);
-                        board.makeMove(i, j);
+                        undoMove(row, col);
                         best = Math.max(score, best);
                     }
                 }
@@ -51,17 +51,22 @@ public class AIPlayer {
             return best;
         } else {
             int best = Integer.MAX_VALUE;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (board.isValidMove(i, j)) {
-                        board.makeMove(i, j);
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+                    if (board.isMoveLegal(row, col)) {
+                        board.placeMark(row, col);
                         int score = minimax(true);
-                        board.makeMove(i, j);
+                        undoMove(row, col);
                         best = Math.min(score, best);
                     }
                 }
             }
             return best;
         }
+    }
+    
+    private void undoMove(int row, int col) {
+        board.placeMark(row, col);
+        board.placeMark(row, col);
     }
 }
