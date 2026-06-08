@@ -1,10 +1,11 @@
 // Copyright 2025 UNN-CS
+// Nazyrov A.A.
 
 package com.mycompany.app;
 
 public enum GameState {
-    IN_PROGRESS,
-    X_WON,
-    O_WON,
-    DRAW
+    GAME_ACTIVE,
+    FIRST_WON,
+    SECOND_WON,
+    TIE_GAME
 }

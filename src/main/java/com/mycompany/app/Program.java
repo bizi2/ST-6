@@ -1,4 +1,5 @@
 // Copyright 2025 UNN-CS
+// Nazyrov A.A.
 
 package com.mycompany.app;
 
@@ -6,28 +7,28 @@ import java.util.Scanner;
 
 public class Program {
     public static void main(String[] args) {
-        Board board = new Board();
-        AIPlayer ai = new AIPlayer(board);
-        Scanner sc = new Scanner(System.in);
+        Board gameBoard = new Board();
+        AIEngine computerAI = new AIEngine(gameBoard);
+        Scanner inputScan = new Scanner(System.in);
         
-        System.out.println("Tic Tac Toe vs AI");
+        System.out.println("Tic Tac Toe Game");
         
-        while (!board.isGameOver()) {
-            board.printBoard();
-            System.out.print("Your move (row col): ");
-            int r = sc.nextInt();
-            int c = sc.nextInt();
-            if (board.makeMove(r, c)) {
-                if (board.isGameOver()) break;
-                System.out.println("AI thinking...");
-                int[] move = ai.getBestMove();
-                board.makeMove(move[0], move[1]);
+        while (!gameBoard.isGameFinished()) {
+            gameBoard.printBoardState();
+            System.out.print("Enter your move (row col): ");
+            int rowVal = inputScan.nextInt();
+            int colVal = inputScan.nextInt();
+            if (gameBoard.doMove(rowVal, colVal)) {
+                if (gameBoard.isGameFinished()) break;
+                System.out.println("AI is making decision...");
+                int[] aiMove = computerAI.getOptimalMove();
+                gameBoard.doMove(aiMove[0], aiMove[1]);
             } else {
-                System.out.println("Invalid move!");
+                System.out.println("Invalid position!");
             }
         }
-        board.printBoard();
-        System.out.println("Game over: " + board.getState());
-        sc.close();
+        gameBoard.printBoardState();
+        System.out.println("Game result: " + gameBoard.getGameFlag());
+        inputScan.close();
     }
 }
