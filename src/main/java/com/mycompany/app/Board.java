@@ -1,5 +1,4 @@
 // Copyright 2025 UNN-CS
-// Nazyrov A.A.
 
 package com.mycompany.app;
 
